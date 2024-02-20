@@ -10,13 +10,25 @@ class BasicModel(Model):
         self.model = Sequential([
             layers.Rescaling(1/255, input_shape=input_shape), #black-white
             layers.Resizing(48,48), 
-            layers.Conv2DTranspose(categories_count,(2,2), activation='relu'),
+            layers.Conv2D(categories_count,(2,2), activation='relu'),
+            layers.MaxPooling2D(pool_size=(2, 2)),
+            layers.Conv2D(64,kernel_size=(3, 3), dilation_rate=(2, 2), activation='relu', padding='same'),
+            # layers.DepthwiseConv2D(kernel_size=(3, 3), activation='relu', padding='same'),
             layers.MaxPooling2D(pool_size=(2, 2), strides=(2, 2)),
+            layers.Conv2D(128,kernel_size=(3, 3), activation='relu', padding='same'),
+            layers.MaxPooling2D(),
+            layers.SpatialDropout2D(0.1),
+
+            # layers.BatchNormalization(),
+            # layers.Dense(32, activation='relu'),
+            
             layers.Flatten(),
-            layers.Dense(512, activation='relu'),
-            layers.Activation('relu'),
-            layers.BatchNormalization(),
+            layers.Dense(256, activation='relu'),
+            # layers.Dense(512, activation='relu'),
+            layers.Dropout(0.15),
+            # layers.Activation('relu'),
             layers.Dense(categories_count, activation='softmax')
+
         ])
         # self.model.add(layers.Dense(categories_count, activation='relu', input_shape=input_shape))
         # self.model.add(layers.Dense(categories_count, activation='softmax'))
