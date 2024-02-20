@@ -111,7 +111,7 @@ class UserWebcamPlayer:
         resized_image = np.resize(img, new_size)
         resized_image = resized_image.reshape(new_size)
         resized_image = resized_image[np.newaxis, ...]
-        model = models.load_model("results/basic_model_10_epochs_timestamp_1708452049.keras")
+        model = models.load_model("step6_submission_basic_model_10_epochs_timestamp_1708452049.keras")
         emotion = model.predict(resized_image)
         emotion = int(np.argmax(emotion))
         return emotion
