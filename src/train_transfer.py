@@ -1,19 +1,21 @@
 from preprocess import get_transfer_datasets
 from models.transfered_model import TransferedModel
 from models.random_model import RandomModel
-from config import image_size, categories
+from models.basic_model import BasicModel
+
+from config import transfer_image_size, transfer_categories
 import matplotlib.pyplot as plt
 import time
 
 # Your code should change these values based on your choice of dataset for the transfer task
 # -------------
-input_shape = (image_size[0], image_size[1], 3)
-categories_count = 3
+input_shape = (transfer_image_size[0], transfer_image_size[1], 3)
+categories_count = 2
 # -------------
 
 models = {
     'transfered_model': TransferedModel,
-    'random_model': RandomModel,
+    'random_model': BasicModel,
 }
 
 def plot_history_diff(initial_hist, transfered_hist):
@@ -34,7 +36,7 @@ def plot_history_diff(initial_hist, transfered_hist):
 
 if __name__ == "__main__":
     # Your code should change the number of epochs
-    epochs = 3
+    epochs = 10
     print('* Data preprocessing')
     train_dataset, validation_dataset, test_dataset = get_transfer_datasets()
     histories = []
