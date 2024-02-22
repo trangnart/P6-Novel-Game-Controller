@@ -2,7 +2,7 @@ from models.model import Model
 from tensorflow.keras import Sequential, layers, models
 from tensorflow.keras.layers.experimental.preprocessing import Rescaling
 from tensorflow.keras.optimizers import RMSprop, Adam
-import numpy as np 
+import numpy as np
 
 class RandomModel(Model):
     def _define_model(self, input_shape, categories_count):
@@ -18,13 +18,12 @@ class RandomModel(Model):
         for layer in self.model.layers:
             layer.trainable = False
 
-        self.model.randomize_layers()
-
         self.model.layers.pop()
+        self.model._randomize_layers()
+
         self.model.add(layers.Dense(256, activation='relu', name='dense_relu'))
         self.model.add(layers.Dense(categories_count, activation='softmax', name="dense_softmax"))
 
-    
     def _compile_model(self):
         self.model.compile(
             optimizer=RMSprop(learning_rate=0.001),
@@ -39,7 +38,7 @@ class RandomModel(Model):
         # you can write a function here to set the weights to a random value
         # use this function in _define_model to randomize the weights of your loaded model
         for layer in model.layers:
-            if hasattr(layer, 'kernel'):
                 weights_shape = layer.get_weights()
                 new_weights = [np.random.standard_normal(w.shape) for w in weights_shape]
                 layer.set_weights(new_weights)
+        return model 
