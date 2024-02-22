@@ -13,6 +13,8 @@ class TransferedModel(Model):
         # use this model by removing the last layer, adding dense layers and an output layer
 
         self.model = Model.load_model("step6_submission_basic_model_10_epochs_timestamp_1708452049.keras").model
+        self.model.pop()
+        
         for layer in self.model.layers:
             layer.trainable = False
 
